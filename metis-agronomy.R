@@ -24,32 +24,78 @@ getdata <- function(dataset = input$datasets) {
   values[[dataset]]
 }	
 
-loadUserData <- function(uFile) {
+# loadUserData <- function(uFile) {
+# 
+# 	ext <- file_ext(uFile)
+# 	objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(uFile))
+# 	ext <- tolower(ext)
+# 
+# 	if(ext == 'rda' || ext == 'rdata') {
+# 		# objname will hold the name of the object inside the R datafile
+# 	  objname <- robjname <- load(uFile)
+# 		values[[robjname]] <- get(robjname)
+# 	}
+# 
+# 	if(datasets[1] == '') {
+# 		datasets <<- c(objname)
+# 	} else {
+# 		datasets <<- unique(c(objname,datasets))
+# 	}
+# 
+# 	if(ext == 'sav') {
+# 		values[[objname]] <- read.sav(uFile)
+# 	} else if(ext == 'dta') {
+# 		values[[objname]] <- read.dta(uFile)
+# 	} else if(ext == 'csv') {
+# 		values[[objname]] <- read.csv(uFile)
+# 	}
+# }
 
-	ext <- file_ext(uFile)
-	objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(uFile))
-	ext <- tolower(ext)
 
-	if(ext == 'rda' || ext == 'rdata') {
-		# objname will hold the name of the object inside the R datafile
-	  objname <- robjname <- load(uFile)
+loadUserData <- function(state) {
+  inFile <- state$upload
+  if (is.null(inFile))
+    return(NULL)
+  
+  filename <- inFile$name
+  ext <- file_ext(filename)
+  file <- newdata <- sub(paste(".",ext,sep = ""),"",filename)
+  ext <- tolower(ext)
+  if(ext == 'rda' || ext == 'rdata') {
+#     newdata <- load(inFile$datapath, envir = .GlobalEnv)
+    objname <- robjname <- load(inFile$datapath)
 		values[[robjname]] <- get(robjname)
-	}
+  }
+  # by putting this here we get the name of the object inside the R data file
+#   data_sets <<- unique(c(newdata,data_sets))
 
-	if(datasets[1] == '') {
-		datasets <<- c(objname)
-	} else {
-		datasets <<- unique(c(objname,datasets))
-	}
-
-	if(ext == 'sav') {
-		values[[objname]] <- read.sav(uFile)
-	} else if(ext == 'dta') {
-		values[[objname]] <- read.dta(uFile)
-	} else if(ext == 'csv') {
-		values[[objname]] <- read.csv(uFile)
-	}
+    if(datasets[1] == '') {
+  		datasets <<- c(objname)
+  	} else {
+  		datasets <<- unique(c(objname,datasets))
+  	}  
+  
+#   if(ext == 'sav') {
+#     assign(file, read.spss(inFile$datapath), envir = .GlobalEnv)
+#   } else if(ext == 'dta') {
+#     assign(file, read.dta(inFile$datapath), envir = .GlobalEnv)
+#   } else if(ext == 'csv') {
+#     assign(file, read.csv(inFile$datapath, header = TRUE), envir = .GlobalEnv)
+#   } else if(ext == 'xls' || ext == 'xlsx') {
+#     assign(file, read.xlsx(inFile$datapath, 1), envir = .GlobalEnv)
+#   }
+    if(ext == 'sav') {
+  		values[[objname]] <- read.sav(inFile$datapath)
+  	} else if(ext == 'dta') {
+  		values[[objname]] <- read.dta(inFile$datapath)
+  	} else if(ext == 'csv') {
+  		values[[objname]] <- read.csv(inFile$datapath)
+    } else if(ext == 'xls' || ext == 'xlsx') {
+      values[[objname]] <- read.xlsx(inFile$datapath, 1)
+    }
 }
+
+
 
 loadPackData <- function(pFile) {
 

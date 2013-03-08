@@ -21,8 +21,9 @@ shinyUI(
       conditionalPanel(condition = "input.tool == 'dataview'",
         conditionalPanel(condition = "input.datatabs != 'Visualize'",
           wellPanel(
-            HTML("<label>Load user data: (.rda | .csv | .sav | .dta)</label>"),
-            actionButton("upload", "Choose a file"),
+            fileInput("upload", "Load data (Rdata, CSV, Spss, Stata or Microsoft Excel format)"),
+#             HTML("<label>Load user data: (.rda | .csv | .sav | .dta)</label>"),
+#             actionButton("upload", "Choose a file"),
             # helpText("Loading user data disabled on Shiny-Server"),
             br(), br(),
             selectInput(inputId = "packData", label = "Load package data:", choices = packDataSets, selected = '', multiple = FALSE)
