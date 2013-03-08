@@ -26,7 +26,7 @@ shinyServer(function(input, output) {
 	# Note that we never get or assign the "original" copies of mtcars, morley, 
 	# or rock. This way, all user sessions are independent from each other 
 
-	values <- reactiveValues()
+	values <- renderValues()
 	values$mtcars <- mtcars
 	values$morley <- morley
 	values$rock <- rock
@@ -35,7 +35,7 @@ shinyServer(function(input, output) {
 	datasets <- c("mtcars", "morley", "rock")
 
 	# source base functions
-	source('radyant.R', local = TRUE)
+	source('metis-agronomy.R', local = TRUE)
 
 	# source enabled analysis tools
 	sourceDirectory('tools_enabled/')

@@ -2,7 +2,7 @@ shinyUI(
 
   pageWithSidebar(
 
-    headerPanel("Radyant - Agronomy analytics using Shiny"),
+    headerPanel("Metis - Agronomy module"),
     
     sidebarPanel(
 

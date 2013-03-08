@@ -3,7 +3,7 @@
 # CRD Analysis ------------------------------------------------------------
 
 # variable selection - CRD Analysis
-output$crd_depvar <- reactiveUI(function() {
+output$crd_depvar <- renderUI({
   vars <- varnames()
   if(is.null(vars)) return()
   isFct <- sapply(getdata(), is.numeric)
@@ -12,14 +12,14 @@ output$crd_depvar <- reactiveUI(function() {
 })
 
 # variable selection - CRD Analysis
-output$crd_indepvar <- reactiveUI(function() {
+output$crd_indepvar <- renderUI({
   vars <- varnames()
   if(is.null(vars)) return()
   selectInput(inputId = "crd_indepvar", label = "Explanatory variables (select one or more):", 
               choices = vars[-match(input$crd_depvar, vars)] , selected = NULL, multiple = TRUE)
 })
 
-output$crd_mcp_testvar <- reactiveUI(function() {
+output$crd_mcp_testvar <- renderUI({
   vars <- input$crd_indepvar
   if(is.null(vars)) return()
   selectInput(inputId = "crd_mcp_testvar", label = "Variables to test:", choices = vars, selected = NULL, multiple = TRUE)
@@ -80,7 +80,7 @@ plot_mcp.crdAnalysis <- function(result) {
   }  
 }
 
-crdAnalysis <- reactive(function() {
+crdAnalysis <- reactive({
   if(is.null(input$crd_indepvar)) return("Please select an explanatory variable")
   var1 <- input$crd_indepvar
   var2 <- input$crd_depvar
@@ -101,7 +101,7 @@ crdAnalysis <- reactive(function() {
 # CRBD Analysis -----------------------------------------------------------
 
 # variable selection - CRBD Analysis
-output$crbd_blockvar <- reactiveUI(function() {
+output$crbd_blockvar <- renderUI({
   vars <- varnames()
   if(is.null(vars)) return()
   selectInput(inputId = "crbd_blockvar", label = "Select block variable:", 
@@ -109,7 +109,7 @@ output$crbd_blockvar <- reactiveUI(function() {
 })
 
 # variable selection - CRBD Analysis
-output$crbd_indepvar <- reactiveUI(function() {
+output$crbd_indepvar <- renderUI({
   vars <- varnames()
   if(is.null(vars)) return()
   selectInput(inputId = "crbd_indepvar", label = "Explanatory variables (select one or more):", 
@@ -117,7 +117,7 @@ output$crbd_indepvar <- reactiveUI(function() {
               selected = NULL, multiple = TRUE)
 })
 
-output$crbd_mcp_testvar <- reactiveUI(function() {
+output$crbd_mcp_testvar <- renderUI({
   vars <- input$crd_indepvar
   if(is.null(vars)) return()
   selectInput(inputId = "crbd_mcp_testvar", label = "Variables to test:", choices = vars, selected = NULL, multiple = TRUE)
@@ -179,7 +179,7 @@ plot_mcp.crbdAnalysis <- function(result) {
   }  
 }
 
-crbdAnalysis <- reactive(function() {
+crbdAnalysis <- reactive({
   if(is.null(input$crd_indepvar)) return("Please select an explanatory variable")
   var1 <- input$crbd_indepvar
   var2 <- input$crd_depvar
@@ -201,7 +201,7 @@ crbdAnalysis <- reactive(function() {
 # FD Analysis -------------------------------------------------------------
 
 # variable selection - CRBD Analysis
-output$fd_blockvar <- reactiveUI(function() {
+output$fd_blockvar <- renderUI({
   vars <- varnames()
   if(is.null(vars)) return()
   selectInput(inputId = "fd_blockvar", label = "Select block variable:", 
@@ -209,7 +209,7 @@ output$fd_blockvar <- reactiveUI(function() {
 })
 
 # variable selection - CRBD Analysis
-output$fd_indepvar <- reactiveUI(function() {
+output$fd_indepvar <- renderUI({
   vars <- varnames()
   if(is.null(vars)) return()
   selectInput(inputId = "fd_indepvar", label = "Explanatory variables (select one or more):", 
@@ -217,7 +217,7 @@ output$fd_indepvar <- reactiveUI(function() {
               selected = NULL, multiple = TRUE)
 })
 
-output$fd_mcp_testvar <- reactiveUI(function() {
+output$fd_mcp_testvar <- renderUI({
   vars <- input$fd_indepvar
   if(is.null(vars)) return()
   selectInput(inputId = "fd_mcp_testvar", label = "Variables to test:", choices = vars, selected = NULL, multiple = TRUE)
@@ -263,7 +263,7 @@ extra.fdAnalysis <- function(result) {
   cat("Under development\n")
 }
 
-fdAnalysis <- reactive(function() {
+fdAnalysis <- reactive({
   if(is.null(input$fd_indepvar) || length(input$fd_indepvar) < 2 ) return("Please select two or more explanatory variables")
   var1 <- input$fd_indepvar
   var2 <- input$crd_depvar  
