@@ -24,53 +24,17 @@ getdata <- function(dataset = input$datasets) {
   values[[dataset]]
 }	
 
-# loadUserData <- function(uFile) {
-# 
-# 	ext <- file_ext(uFile)
-# 	objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(uFile))
-# 	ext <- tolower(ext)
-# 
-# 	if(ext == 'rda' || ext == 'rdata') {
-# 		# objname will hold the name of the object inside the R datafile
-# 	  objname <- robjname <- load(uFile)
-# 		values[[robjname]] <- get(robjname)
-# 	}
-# 
-# 	if(datasets[1] == '') {
-# 		datasets <<- c(objname)
-# 	} else {
-# 		datasets <<- unique(c(objname,datasets))
-# 	}
-# 
-# 	if(ext == 'sav') {
-# 		values[[objname]] <- read.sav(uFile)
-# 	} else if(ext == 'dta') {
-# 		values[[objname]] <- read.dta(uFile)
-# 	} else if(ext == 'csv') {
-# 		values[[objname]] <- read.csv(uFile)
-# 	}
-# }
-
-
-loadUserData <- function(state) {
-  inFile <- state$upload
+loadUserData <- function(inFile) {
   if (is.null(inFile))
     return(NULL)
   
   filename <- inFile$name
   ext <- file_ext(filename)
-#   file <- newdata <- sub(paste(".",ext,sep = ""),"",filename)
   objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(filename))
   ext <- tolower(ext)
-  
-  #   ext <- file_ext(uFile)
-  # 	objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(uFile))
-  # 	ext <- tolower(ext)
-  
-  
+
   
   if(ext == 'rda' || ext == 'rdata') {
-#     newdata <- load(inFile$datapath, envir = .GlobalEnv)
     objname <- robjname <- load(inFile$datapath)
 		values[[robjname]] <- get(robjname)
   }
@@ -83,15 +47,6 @@ loadUserData <- function(state) {
   		datasets <<- unique(c(objname,datasets))
   	}  
   
-#   if(ext == 'sav') {
-#     assign(file, read.spss(inFile$datapath), envir = .GlobalEnv)
-#   } else if(ext == 'dta') {
-#     assign(file, read.dta(inFile$datapath), envir = .GlobalEnv)
-#   } else if(ext == 'csv') {
-#     assign(file, read.csv(inFile$datapath, header = TRUE), envir = .GlobalEnv)
-#   } else if(ext == 'xls' || ext == 'xlsx') {
-#     assign(file, read.xlsx(inFile$datapath, 1), envir = .GlobalEnv)
-#   }
     if(ext == 'sav') {
   		values[[objname]] <- read.sav(inFile$datapath)
   	} else if(ext == 'dta') {
@@ -101,6 +56,12 @@ loadUserData <- function(state) {
     } else if(ext == 'xls' || ext == 'xlsx') {
       values[[objname]] <- read.xlsx(inFile$datapath, 1)
     }
+  
+  if(as.numeric(inFile$size) > 0 ) {
+    tagList(
+      tags$script("$(function() {$('.shiny-file-input-progress').hide(); });")
+    ) 
+  }
 }
 
 
@@ -153,8 +114,9 @@ output$datasets <- renderUI({
 #     loadUserData(input$upload)
 #   }
 
-  input$upload
-  loadUserData(as.list(input))
+#   input$upload
+#   loadUserData(as.list(input))
+  loadUserData(input$upload)
   
 	# loading package data
 	if(input$packData != "") {
