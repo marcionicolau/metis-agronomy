@@ -59,8 +59,16 @@ loadUserData <- function(state) {
   
   filename <- inFile$name
   ext <- file_ext(filename)
-  file <- newdata <- sub(paste(".",ext,sep = ""),"",filename)
+#   file <- newdata <- sub(paste(".",ext,sep = ""),"",filename)
+  objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(filename))
   ext <- tolower(ext)
+  
+  #   ext <- file_ext(uFile)
+  # 	objname <- robjname <- sub(paste(".",ext,sep = ""),"",basename(uFile))
+  # 	ext <- tolower(ext)
+  
+  
+  
   if(ext == 'rda' || ext == 'rdata') {
 #     newdata <- load(inFile$datapath, envir = .GlobalEnv)
     objname <- robjname <- load(inFile$datapath)
@@ -133,14 +141,21 @@ output$columns <- renderUI({
 })
 
 output$datasets <- renderUI({
+# 
+# 	fpath <- uploadfunc()
+# 
+# 	# loading user data
+# 	if(fpath != "") {
+# 		loadUserData(fpath)
+# 	} 
+  
+#   if(input$upload != "") {
+#     loadUserData(input$upload)
+#   }
 
-	fpath <- uploadfunc()
-
-	# loading user data
-	if(fpath != "") {
-		loadUserData(fpath)
-	} 
-
+  input$upload
+  loadUserData(as.list(input))
+  
 	# loading package data
 	if(input$packData != "") {
 		if(input$packData != lastLoaded) {

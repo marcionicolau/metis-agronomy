@@ -1,6 +1,6 @@
 # avoid breaks in R-output print and show JSON packets transferred
 # over websockets
-options(width = 150, shiny.trace=TRUE, error=traceback)
+options(width = 150, shiny.trace=TRUE, error=traceback, shiny.maxRequestSize = -1)
 # options(width = 150, shiny.trace=TRUE)
 
 # loading list of data.frame in the car package
