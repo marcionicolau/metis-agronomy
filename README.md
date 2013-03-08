@@ -1,4 +1,4 @@
-swas-agronomy
+metis-agronomy
 =============
 
-Agronomy submodule of swas
+Agronomy submodule of metis
