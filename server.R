@@ -26,7 +26,7 @@ shinyServer(function(input, output) {
 	# Note that we never get or assign the "original" copies of mtcars, morley, 
 	# or rock. This way, all user sessions are independent from each other 
 
-	values <- renderValues()
+	values <- reactiveValues()
 	values$mtcars <- mtcars
 	values$morley <- morley
 	values$rock <- rock
